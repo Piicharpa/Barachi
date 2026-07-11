@@ -1,0 +1,70 @@
+@model Barachi.Models.RetapingViewModel
+
+@{
+    ViewData["Title"] = "Retaping";
+}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="text-center mb-5">
+    <h1 class="display-4">Retaping</h1>
+    <p class="text-muted">This RBID is not type 15mg — please follow the retaping instructions below.</p>
+</div>
+
+<div class="container">
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-body">
+
+            <div class="row mb-3">
+                <div class="col-6">
+                    <div class="fw-bold text-muted small">RBID</div>
+                    <div class="fs-5">@Model.RBID</div>
+                </div>
+                <div class="col-6">
+                    <div class="fw-bold text-muted small">Lot Number</div>
+                    <div class="fs-5">@Model.LotNumber</div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="mb-4">
+                <div class="fw-bold text-muted small mb-1">Instructions</div>
+                <div class="alert alert-primary mb-0" style="white-space: pre-wrap;">@Model.Instructions</div>
+            </div>
+
+            <form id="retapingForm" method="post" action="/Home/Retaping">
+                @Html.HiddenFor(m => m.RBID)
+                @Html.HiddenFor(m => m.LotNumber)
+                @Html.HiddenFor(m => m.Type)
+                @Html.HiddenFor(m => m.Instructions)
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary px-4">I've Completed the Retaping</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('retapingForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: 'Confirm Retaping Completed?',
+            text: 'This will mark the retaping step as done for this RBID.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#0d6efd',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, done',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('retapingForm').submit();
+            }
+        });
+    });
+</script>

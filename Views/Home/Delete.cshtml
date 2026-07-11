@@ -1,0 +1,120 @@
+@model Barachi.Models.DeleteViewModel
+
+@{
+    ViewData["Title"] = "Delete Barachi";
+}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="text-center mb-5">
+    <h1 class="display-4">Delete Barachi</h1>
+</div>
+
+<div class="container">
+    <form id="deleteForm" method="post" action="/Home/Delete">
+
+        <!-- ROW 1: RBID, Lot Number, Type (read-only, populated from scan/lookup) -->
+        <div class="row mb-3">
+            <div class="col-md-4 form-group">
+                @Html.LabelFor(m => m.RBID, new { @class = "form-label fw-bold" })
+                @Html.TextBoxFor(m => m.RBID, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.RBID, "", new { @class = "text-danger small" })
+            </div>
+
+            <div class="col-md-4 form-group">
+                @Html.LabelFor(m => m.LotNumber, new { @class = "form-label fw-bold" })
+                @Html.TextBoxFor(m => m.LotNumber, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.LotNumber, "", new { @class = "text-danger small" })
+            </div>
+
+            <div class="col-md-4 form-group">
+                @Html.LabelFor(m => m.Type, new { @class = "form-label fw-bold" })
+                @Html.TextBoxFor(m => m.Type, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.Type, "", new { @class = "text-danger small" })
+            </div>
+        </div>
+
+        <!-- ROW 2: PIC -->
+        <div class="row mb-3">
+            <div class="col-md-6 form-group">
+                @Html.LabelFor(m => m.PIC, new { @class = "form-label fw-bold" })
+                @Html.TextBoxFor(m => m.PIC, new { @class = "form-control", placeholder = "Enter PIC..." })
+                @Html.ValidationMessageFor(m => m.PIC, "", new { @class = "text-danger small" })
+            </div>
+        </div>
+
+        <!-- ROW 3: Reasons -->
+        <div class="row mb-4">
+            <div class="col-md-12 form-group">
+                @Html.LabelFor(m => m.Reasons, new { @class = "form-label fw-bold" })
+                @Html.TextAreaFor(m => m.Reasons, new { @class = "form-control", rows = 3, placeholder = "Enter reasons..." })
+                @Html.ValidationMessageFor(m => m.Reasons, "", new { @class = "text-danger small" })
+            </div>
+        </div>
+
+        <!-- SUBMIT ACTIONS -->
+        <div class="row">
+            <div class="col-12 text-end">
+                <button type="submit" class="btn btn-danger px-4">Confirm Delete</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('deleteForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const rbId = document.getElementById('RBID').value.trim();
+        const lotNumber = document.getElementById('LotNumber').value.trim();
+        const type = document.getElementById('Type').value.trim();
+        const pic = document.getElementById('PIC').value.trim();
+        const reasons = document.getElementById('Reasons').value.trim();
+
+        if (!pic || !reasons) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Missing Information',
+                text: 'Please fill out PIC and Reasons before continuing.'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Are you absolutely sure?',
+            html: `
+                <p class="text-muted">Review the details you entered below:</p>
+                <div style="text-align: left; background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #dee2e6;">
+                    <strong>RBID:</strong> ${escapeHtml(rbId)}<br>
+                    <strong>Lot Number:</strong> ${escapeHtml(lotNumber)}<br>
+                    <strong>Type:</strong> ${escapeHtml(type)}<br>
+                    <strong>PIC:</strong> ${escapeHtml(pic)}<br>
+                    <strong>Reasons:</strong> <span style="white-space: pre-wrap;">${escapeHtml(reasons)}</span>
+                </div>
+                <br>
+                <span class="text-danger fw-bold">This action cannot be undone!</span>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Server-side Delete action reads Type and redirects to
+                // Killdown (Type == "15mg") or Retaping (anything else)
+                document.getElementById('deleteForm').submit();
+            }
+        });
+    });
+
+    function escapeHtml(text) {
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
