@@ -116,7 +116,7 @@ namespace Barachi.Controllers
         [HttpPost]
         public IActionResult Killdown(KilldownViewModel model)
         {
-            _killdownService.Acknowledge(model);
+            // _killdownService.Acknowledge(model);
 
             TempData["Success"] = $"Killdown acknowledged for RBID {model.RBID}.";
             return RedirectToAction("Scan");

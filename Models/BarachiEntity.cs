@@ -2,7 +2,7 @@ namespace Barachi.Models
 {
     public class BarachiEntity
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string RBID { get; set; }
         public string LotNumber { get; set; }
         public string Type { get; set; }        // e.g. "15mg"

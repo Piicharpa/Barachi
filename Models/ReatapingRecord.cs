@@ -6,7 +6,7 @@ namespace Barachi.Models
     // the retaping instructions for a given RBID
     public class RetapingRecord
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string RBID { get; set; }
         public string LotNumber { get; set; }
         public string Instructions { get; set; }

@@ -5,7 +5,7 @@ namespace Barachi.Models
     // Maps to the "BarachiDeleteLogs" table — audit trail of every delete confirmation
     public class BarachiDeleteLog
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string RBID { get; set; }
         public string PIC { get; set; }
         public string Reasons { get; set; }

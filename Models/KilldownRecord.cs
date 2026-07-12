@@ -6,7 +6,7 @@ namespace Barachi.Models
     // the killdown instructions for a given RBID
     public class KilldownRecord
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string RBID { get; set; }
         public string LotNumber { get; set; }
         public string Instructions { get; set; }

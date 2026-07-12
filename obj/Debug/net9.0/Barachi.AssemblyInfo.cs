@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Barachi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d146abd58e044d777c92fd337fef2ed207311df3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+37cfea0548868d341ae6f64ba6c795fea8e3f0b7")]
 [assembly: System.Reflection.AssemblyProductAttribute("Barachi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Barachi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

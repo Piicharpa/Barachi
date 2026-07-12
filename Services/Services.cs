@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Barachi.Data;
 using Barachi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Barachi.Services
 {
@@ -22,7 +23,28 @@ namespace Barachi.Services
 
         public BarachiEntity GetByRBID(string rbId)
         {
-            return _context.Barachi.FirstOrDefault(b => b.RBID == rbId);
+            // return _context.Barachi.FirstOrDefault(b => b.RBID == rbId);
+            return _context.Barachi
+                .FromSqlInterpolated($@"
+                    SELECT
+                        ID,
+                        RBID,
+                        LOTNUMBER,
+                        TYPE,
+                        QUANTITY,
+                        STATUS,
+                        CREATEDDATE,
+                        MODIFIEDDATE
+                    FROM DIP1.BARACHI
+                    WHERE RBID = {rbId}")
+                .AsEnumerable()
+                .FirstOrDefault();
+
+            // var query = _context.Barachi.Where(b => b.RBID == rbId);
+
+            // Console.WriteLine(query.ToQueryString());
+
+            // return query.FirstOrDefault();
         }
     }
 
@@ -88,8 +110,8 @@ namespace Barachi.Services
         public string GetInstructions(string rbId, string lotNumber, string type)
         {
             // TODO: replace with real business rule / lookup table for killdown locations.
-            return $"Killdown all chips for Lot {lotNumber} (RBID: {rbId}) at the designated 15mg killdown station. " +
-                   "Verify the chip count matches the lot record before disposal.";
+            return $"Killdown all chips for RBID: {rbId}) in Lot {lotNumber} (RBID: {rbId}) at the designated 15mg killdown station. " +
+                   "Verify the chip count matches the data record before disposal.";
         }
 
         public void Acknowledge(KilldownViewModel model)
